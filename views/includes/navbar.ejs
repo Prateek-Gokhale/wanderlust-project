@@ -1,0 +1,77 @@
+<style>
+  .search-btn {
+    background-color: #fe424d;
+    color: white;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+  .search-btn:hover {
+    background-color: #d41f27;
+    color: white;
+  }
+  .search-btn i {
+    margin-right: 5px;
+    display: inline;
+  }
+
+  .search-input {
+    border-radius: 25px;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    font-size: 1rem;
+  }
+
+  .nav-link {
+    color: #222 !important;
+    font-size: 0.95rem;
+  }
+
+  .nav-link:hover {
+    color: #fe424d !important;
+    text-decoration: underline;
+  }
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+
+    <!-- Toggler for small screens -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+      <!-- Left Nav -->
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+
+      <!-- Center Search -->
+      <div class="flex-grow-1 d-flex justify-content-center">
+        <form class="d-flex" role="search" method="GET" action="https://www.google.com/search" target="_blank">
+       <input class="form-control me-2 search-input" type="search" name="q" placeholder="search destinations" aria-label="Search" required />
+       <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+       </form>
+
+      </div>
+
+      <!-- Right Nav -->
+      <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
+        <a class="nav-link" href="/listings/new">Airbnb your home</a>
+
+        <% if(!currUser) { %>
+          <a class="nav-link fw-semibold" href="/signup">Sign Up</a>
+          <a class="nav-link fw-semibold" href="/login">Log In</a>
+        <% } else { %>
+          <a class="nav-link fw-semibold" href="/logout">Log Out</a>
+        <% } %>
+      </div>
+
+    </div>
+  </div>
+</nav>
+<!-- End of Navbar -->
