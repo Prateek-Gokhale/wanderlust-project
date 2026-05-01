@@ -23,6 +23,29 @@ const listingSchema = new Schema({
        filename: String
 },
 price: Number,
+    category: {
+        type: String,
+        enum: ['Trending', 'Rooms', 'Iconic Cities', 'Mountains', 'Castles', 'Amazing Pools', 'Camping', 'Farm House', 'Beach', 'Lake'],
+        default: 'Trending',
+    },
+    maxGuests: {
+        type: Number,
+        min: 1,
+        default: 2,
+    },
+    bedrooms: {
+        type: Number,
+        min: 0,
+        default: 1,
+    },
+    bathrooms: {
+        type: Number,
+        min: 0,
+        default: 1,
+    },
+    amenities: [{
+        type: String,
+    }],
     location: String,
     country: String,
     reviews: [{
@@ -47,7 +70,7 @@ price: Number,
         }
     },
    
-});
+}, { timestamps: true });
 
 
 listingSchema.post('findOneAndDelete', async (listing) => {

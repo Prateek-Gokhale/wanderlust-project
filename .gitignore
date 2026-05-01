@@ -1,2 +1,6 @@
 .env
 node_modules/
+*.log
+smoke*.html
+smoke.cookies
+public/uploads/

@@ -1,0 +1,36 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="explore-header">
+  <div>
+    <p class="eyebrow">Your reservations</p>
+    <h1>Trips</h1>
+  </div>
+</section>
+
+<% if (bookings.length === 0) { %>
+  <div class="empty-state">
+    <h2>No trips booked yet</h2>
+    <p>When you reserve a stay, it will appear here.</p>
+    <a href="/listings" class="btn btn-dark">Start exploring</a>
+  </div>
+<% } %>
+
+<div class="trip-list">
+  <% for (let booking of bookings) { %>
+    <article class="trip-card">
+      <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>" />
+      <div>
+        <span class="trip-status <%= booking.status %>"><%= booking.status %></span>
+        <h2><%= booking.listing.title %></h2>
+        <p><%= booking.listing.location %>, <%= booking.listing.country %></p>
+        <p><%= booking.checkIn.toDateString() %> - <%= booking.checkOut.toDateString() %></p>
+        <p><%= booking.guests %> guests · <%= booking.nights %> nights · &#8377;<%= booking.totalPrice.toLocaleString('en-IN') %></p>
+        <% if (booking.status === 'confirmed') { %>
+          <form method="POST" action="/bookings/<%= booking._id %>/cancel?_method=PATCH">
+            <button class="btn btn-outline-dark btn-sm">Cancel booking</button>
+          </form>
+        <% } %>
+      </div>
+    </article>
+  <% } %>
+</div>

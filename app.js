@@ -20,9 +20,12 @@ const User = require("./models/user.js");
 const listingRouter = require ("./routes/listing.js");
 const reviewRouter = require ("./routes/review.js");
 const userRouter = require ("./routes/user.js");
+const bookingRouter = require ("./routes/booking.js");
+const tripRouter = require ("./routes/trip.js");
 
 
-const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = process.env.ATLASDB_URL || process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+const sessionSecret = process.env.SECRET || process.env.SECRETE || "local-development-secret";
 
 main()
 .then(() => {
@@ -48,7 +51,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto: {
-  secret: process.env.SECRETE,
+  secret: sessionSecret,
   },
   touchAfter: 24 * 3600, // time period in seconds
 });
@@ -59,12 +62,12 @@ store.on("error", (error) => {
 
 const sessionOptions = {
   store: store,
-  secret: process.env.SECRETE,
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 1000, // 7 days
-    maxAge: 7 * 24 * 60 * 1000, // 7 days
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
   },
 };
@@ -108,11 +111,17 @@ next();
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
+app.use("/listings/:id/bookings", bookingRouter);
+app.use("/", tripRouter);
 app.use("/", userRouter);
 
 // Redirect root URL to /listings
 app.get("/", (req, res) => {
   res.redirect("/listings");
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
 });
 
 app.use((req, res, next) => {
